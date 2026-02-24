@@ -1,0 +1,18 @@
+{
+  "apiVersion": "ai.sap.com/v1alpha1",
+  "kind": "Deployment",
+  "metadata": {
+    "name": "inference-deployment"
+  },
+  "spec": {
+    "template": {
+      "spec": {
+        "containers": [
+          {
+            "image": "YOUR_REGISTRY/ai-project:latest"
+          }
+        ]
+      }
+    }
+  }
+}
