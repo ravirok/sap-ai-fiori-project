@@ -1,0 +1,19 @@
+{
+  "apiVersion": "ai.sap.com/v1alpha1",
+  "kind": "Workflow",
+  "metadata": {
+    "name": "training-workflow"
+  },
+  "spec": {
+    "templates": [
+      {
+        "name": "train",
+        "container": {
+          "image": "YOUR_REGISTRY/ai-project:latest",
+          "command": ["python"],
+          "args": ["train.py"]
+        }
+      }
+    ]
+  }
+}
