@@ -1,0 +1,35 @@
+general:
+  buildTool: "docker"
+
+stages:
+
+  Build:
+    dockerImage: "docker:stable"
+    steps:
+      - script: |
+          VERSION=$(date +%Y%m%d%H%M%S)
+          echo "VERSION=$VERSION" >> version.env
+          docker build -t $REGISTRY_URL/ai-project:$VERSION .
+
+  Push:
+    dockerImage: "docker:stable"
+    steps:
+      - script: |
+          source version.env
+          docker login $REGISTRY_URL -u $REGISTRY_USER -p $REGISTRY_PASSWORD
+          docker push $REGISTRY_URL/ai-project:$VERSION
+
+  Train:
+    steps:
+      - script: |
+          curl -X POST "$AI_CORE_URL/v2/workflows"             -u "$AI_CORE_CLIENT_ID:$AI_CORE_CLIENT_SECRET"             -H "Content-Type: application/json"             -d @config/workflow.json
+
+  Approval:
+    manual: true
+    steps:
+      - script: echo "Approve deployment"
+
+  Deploy:
+    steps:
+      - script: |
+          curl -X POST "$AI_CORE_URL/v2/deployments"             -u "$AI_CORE_CLIENT_ID:$AI_CORE_CLIENT_SECRET"             -H "Content-Type: application/json"             -d @config/deployment.json
