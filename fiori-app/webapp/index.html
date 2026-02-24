@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>AI Prediction App</title>
+</head>
+<body>
+    <button onclick="predict()">Predict</button>
+    <script>
+        function predict() {
+            fetch("/destinations/AI_CORE_DEST/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ input: 5 })
+            })
+            .then(res => res.json())
+            .then(data => alert("Prediction: " + data.prediction));
+        }
+    </script>
+</body>
+</html>
